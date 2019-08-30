@@ -387,4 +387,33 @@ class ServerProvider extends TeBase
         ];
     }
 
+    /**
+     * 更改globaldod
+     * @param $number
+     * @return $this
+     */
+    public function setGlobaldod($column)
+    {
+        $count = null;
+        if (is_array($column)) {
+            $count = count($column);
+        } else {
+            $column = [$column];
+            $count = 1;
+        }
+
+        $datas_count = count($this->datas);
+
+        if ($count != $datas_count) throw new \Exception("全局手机号数量不正确，应该传入：{$datas_count}个号码"  , 422);
+
+        $datas = $this->datas;
+
+        foreach ($datas as $key => $val) {
+            $datas[$key]['globaldod'] = array_shift($column);
+        }
+        $this->datas = $datas;
+
+        return $this;
+    }
+
 }
